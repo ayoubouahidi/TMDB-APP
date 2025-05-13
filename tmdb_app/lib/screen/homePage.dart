@@ -1,8 +1,22 @@
 import 'package:flutter/material.dart';
 
 
-class myHomePage  extends StatelessWidget{
+class myHomePage extends StatefulWidget {
   const myHomePage({super.key});
+
+  @override
+  State<myHomePage> createState() => _myHomePageState();
+}
+
+class _myHomePageState extends State<myHomePage> {
+  int _selectedIndex = 0;
+
+  void _changeIndex(int index) {
+    setState(() {
+      _selectedIndex = index;
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -15,6 +29,22 @@ class myHomePage  extends StatelessWidget{
           HomeTrendingsBuilder(title: "some project 2"),
           HomeTrendingsBuilder(title: "some project 3"),
           HomeTrendingsBuilder(title: "some project 4"),
+        ],
+      ),
+      bottomNavigationBar: BottomNavigationBar(
+        backgroundColor: Colors.blue,
+        selectedItemColor: Color.fromARGB(255, 247, 92, 28),
+        currentIndex: _selectedIndex,
+        onTap: _changeIndex,
+        items: const <BottomNavigationBarItem>[
+          BottomNavigationBarItem(
+            icon: Icon(Icons.home, color: Colors.black, size: 32),
+            label: "Home",
+          ),
+          BottomNavigationBarItem(
+            icon: Icon(Icons.favorite, color: Colors.black, size: 32),
+            label: "Favorites",
+          ),
         ],
       ),
     );
@@ -74,7 +104,7 @@ class HomeAppBar extends StatelessWidget implements PreferredSizeWidget {
                   radius: 20,
                   child: Image(
                         image: AssetImage(
-                          "assets/icons/ofppt.png",
+                          "assets/ofppt.png",
                         ),
                         height: 30,
                       ),
