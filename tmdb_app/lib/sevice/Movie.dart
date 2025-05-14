@@ -12,9 +12,9 @@ class Movie {
   String? media_type;
   String? id;
   String? popularity;
-  String? vote_average;
-  String? vote_count;
-  String? video;
+  double? vote_average;
+  double? vote_count;
+  bool? video;
 
   Movie({
     this.adult,
@@ -42,12 +42,12 @@ class Movie {
       overview: json['overview'],
       release_date: json['release_date'],
       title: json['title'],
-      poster_path: json['poster_path'],
+      poster_path: json['poster_path'] ?? '',
       media_type: json['media_type'],
       id: json['id'].toString(),
       popularity: json['popularity'].toString(),
-      vote_average: json['vote_average'].toString(),
-      vote_count: json['vote_count'].toString(),
+      vote_average: json['vote_average'].toDouble(),
+      vote_count: json['vote_count'].toDouble(),
       video: json['video'],
     );
   }
@@ -69,5 +69,7 @@ class Movie {
       'video': video,
     };
   }
+
+  
 
 }
