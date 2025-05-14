@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'MoviesScreen.dart';
+import '../sevice/Movie.dart';
 
 
 class myHomePage extends StatefulWidget {
@@ -118,6 +120,7 @@ class HomeAppBar extends StatelessWidget implements PreferredSizeWidget {
   }
 }
 
+
 class HomeTrendingsBuilder extends StatelessWidget {
   final String title;
 
@@ -143,12 +146,54 @@ class HomeTrendingsBuilder extends StatelessWidget {
               scrollDirection: Axis.horizontal,
               itemCount: 5,
               itemBuilder: (context, index) {
-                return Container(
-                  width: 120,
-                  margin: const EdgeInsets.all(8),
-                  decoration: BoxDecoration(
-                    color: Colors.blue,
-                    borderRadius: BorderRadius.circular(10),
+                // أنشئ كائن Movie وهمي
+                final movie = Movie(
+                  adult: true,
+                  original_title: "Movie $index",
+                  poster_path: "https://i.pinimg.com/originals/e9/77/ec/e977ec8256a7b1f68c8671327434dba9.jpg",
+                  overview: "This is a overview  movie $index dsoijcio idshcdc odsoic sdco sdhc sdohcpsdohcphsashad vpadp vahpavhapv asvpsadhvp asvphv pahpv haphvps vpashvp apsvhpahv ap vaph vaphvaphv ashspvih vhasdvhhvsiuh sdjvapush vjhs vhu",
+                  release_date: "2023-10-01",
+                  title: "Movie Title $index",
+                  vote_average: 9.0,
+                  vote_count: 100,
+                  backdrop: "https://i.pinimg.com/originals/e9/77/ec/e977ec8256a7b1f68c8671327434dba9.jpg",
+                  popularity: "1000",
+
+                );
+
+                return GestureDetector(
+                  onTap: () {
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                        builder: (_) => MoviesScreen(movie: movie),
+                      ),
+                    );
+                  },
+                  child: Container(
+                    width: 120,
+                    margin: const EdgeInsets.all(8),
+                    decoration: BoxDecoration(
+                      color: Colors.blue,
+                      borderRadius: BorderRadius.circular(10),
+                      image: DecorationImage(
+                        image: NetworkImage(movie.poster_path!),
+                        fit: BoxFit.cover,
+                      ),
+                    ),
+                    child: Align(
+                      alignment: Alignment.bottomCenter,
+                      child: Container(
+                        width: double.infinity,
+                        padding: const EdgeInsets.all(4),
+                        color: Colors.black54,
+                        child: Text(
+                          movie.original_title ?? "",
+                          style: TextStyle(color: Colors.white, fontSize: 12),
+                          textAlign: TextAlign.center,
+                        ),
+                      ),
+                    ),
                   ),
                 );
               },

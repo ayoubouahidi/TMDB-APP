@@ -1,4 +1,3 @@
-import 'package:flutter/material.dart';
 
 class Movie {
   bool? adult;
@@ -12,8 +11,8 @@ class Movie {
   String? media_type;
   String? id;
   String? popularity;
-  String? vote_average;
-  String? vote_count;
+  double? vote_average;
+  int? vote_count;
   String? video;
 
   Movie({
@@ -46,8 +45,8 @@ class Movie {
       media_type: json['media_type'],
       id: json['id'].toString(),
       popularity: json['popularity'].toString(),
-      vote_average: json['vote_average'].toString(),
-      vote_count: json['vote_count'].toString(),
+      vote_average: json['vote_average'].toDouble(),
+      vote_count: json['vote_count'].toInt(),
       video: json['video'],
     );
   }
