@@ -1,4 +1,3 @@
-import 'package:flutter/material.dart';
 
 class Movie {
   bool? adult;
@@ -48,6 +47,7 @@ class Movie {
       popularity: json['popularity'].toString(),
       vote_average: json['vote_average'].toDouble(),
       vote_count: json['vote_count'].toDouble(),
+
       video: json['video'],
     );
   }

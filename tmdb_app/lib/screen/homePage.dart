@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
+
 import 'package:tmdb_app/sevice/Movie.dart';
 import 'package:tmdb_app/Api/api.dart';
 import 'package:carousel_slider/carousel_slider.dart';
+
 
 // class myHomePage extends StatefulWidget {
 //   const myHomePage({super.key});
@@ -745,6 +747,7 @@ class HomeAppBar extends StatelessWidget implements PreferredSizeWidget {
     );
   }
 }
+
 
 class HomeTrendingsBuilder extends StatelessWidget {
   final String title;
