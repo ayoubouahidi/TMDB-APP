@@ -20,7 +20,7 @@ width: double.infinity,
 decoration: BoxDecoration(
 borderRadius: BorderRadius.circular(20),
 image: DecorationImage(
-image: NetworkImage(movie.poster_path.toString()),
+image: NetworkImage("https://image.tmdb.org/t/p/w500${movie.poster_path}"),
 fit: BoxFit.cover,
 ),
 ),
