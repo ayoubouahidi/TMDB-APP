@@ -58,6 +58,15 @@ class MovieDatabase {
         conflictAlgorithm: ConflictAlgorithm.replace,
       );
     }
+    Future<bool> isMovieExists(String? id) async {
+      final db = await this.db;
+      final List<Map<String, dynamic>> maps = await db.query(
+        'movies',
+        where: 'id = ?',
+        whereArgs: [id],
+      );
+      return maps.isNotEmpty;
+    }
 
     Future<List<Movie>> getMovies() async {
       final db = await this.db;
@@ -67,7 +76,7 @@ class MovieDatabase {
       });
     }
 
-    Future<int> deleteMovie(String id) async {
+    Future<int> deleteMovie(String? id) async {
       final db = await this.db;
       return await db.delete(
         'movies',

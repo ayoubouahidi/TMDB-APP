@@ -3,6 +3,9 @@ import 'package:flutter/material.dart';
 import 'package:tmdb_app/sevice/Movie.dart';
 import 'package:tmdb_app/Api/api.dart';
 import 'package:carousel_slider/carousel_slider.dart';
+
+import 'package:tmdb_app/screen/MoviesScreen.dart';
+
 import 'package:tmdb_app/screen/Favorites.dart';
 
 class MyHomePage extends StatefulWidget {
@@ -233,34 +236,44 @@ class HomeTrendingsBuilder extends StatelessWidget {
 
                 final movies = snapshot.data!;
                 return ListView.builder(
-                  scrollDirection: Axis.horizontal,
-                  itemCount: movies.length,
-                  itemBuilder: (context, index) {
-                    final movie = movies[index];
-                    return Container(
-                      width: 120,
-                      margin: const EdgeInsets.all(8),
-                      decoration: BoxDecoration(
-                        color: Colors.grey[300], // Fallback if no poster
-                        borderRadius: BorderRadius.circular(10),
-                        image:
-                            movie.poster_path != null
-                                ? DecorationImage(
-                                  image: NetworkImage(
-                                    'https://image.tmdb.org/t/p/w500${movie.poster_path}',
-                                  ),
-                                  fit: BoxFit.cover,
-                                )
-                                : null,
-                      ),
-                      child:
-                          movie.poster_path == null
-                              ? const Center(child: Icon(Icons.movie))
-                              : null,
-                    );
-                  },
-                );
-              },
+
+  scrollDirection: Axis.horizontal,
+  itemCount: movies.length,
+  itemBuilder: (context, index) {
+    final movie = movies[index];
+    return GestureDetector(
+      onTap: () {
+        Navigator.push(
+          context,
+          MaterialPageRoute(
+            builder: (context) => MoviesScreen(movie: movie),
+          ),
+        );
+      },
+      child: Container(
+        width: 120,
+        margin: const EdgeInsets.all(8),
+        decoration: BoxDecoration(
+          color: Colors.grey[300],
+          borderRadius: BorderRadius.circular(10),
+          image: movie.poster_path != null
+              ? DecorationImage(
+                  image: NetworkImage(
+                    'https://image.tmdb.org/t/p/w500${movie.poster_path}',
+                  ),
+                  fit: BoxFit.cover,
+                )
+              : null,
+        ),
+        child: movie.poster_path == null
+            ? const Center(child: Icon(Icons.movie))
+            : null,
+      ),
+    );
+    },
+  );
+ },
+
             ),
           ),
         ],

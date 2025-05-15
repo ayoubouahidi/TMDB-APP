@@ -19,7 +19,7 @@ class MovieDetails extends StatelessWidget {
           color: Colors.white,
           borderRadius: BorderRadius.circular(20),
           image: DecorationImage(
-            image: NetworkImage(movie.backdrop.toString()),
+            image: NetworkImage("https://image.tmdb.org/t/p/w500${movie.backdrop}"),
             fit: BoxFit.cover,
              colorFilter: ColorFilter.mode(
            Colors.black.withOpacity(0.8), 

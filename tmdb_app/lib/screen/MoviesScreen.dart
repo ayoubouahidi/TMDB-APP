@@ -23,7 +23,7 @@ class MoviesScreen extends StatelessWidget {
           ],
         ),
       ),
-      bottomNavigationBar: const NaveButtom(),
+      bottomNavigationBar: NaveButton(movie: movie,),
       backgroundColor: Colors.white,
     );
   }

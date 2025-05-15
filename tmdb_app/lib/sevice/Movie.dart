@@ -54,7 +54,7 @@ class Movie {
   Map<String, dynamic> toJson() {
     return {
       'adult': adult,
-      'backdrop_path': backdrop,
+      'backdrop': backdrop,
       'original_language': original_language,
       'original_title': original_title,
       'overview': overview,

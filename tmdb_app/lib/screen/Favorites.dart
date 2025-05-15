@@ -17,3 +17,4 @@ class _FavoritesState extends State<Favorites> {
     return Scaffold(appBar: AppBar(title: Text('Favorites')));
   }
 }
+
