@@ -1,11 +1,12 @@
-
 import 'package:flutter/material.dart';
 import 'package:tmdb_app/sevice/Movie.dart';
 import 'package:http/http.dart' as http;
 import 'dart:convert';
 
 class Api {
-  String populaire = "https://api.themoviedb.org/3/movie/popular?api_key=caf4689749740a324bfd12b6a9c57435";
+  String populaire =
+      "https://api.themoviedb.org/3/movie/popular?api_key=caf4689749740a324bfd12b6a9c57435";
+  String topRated = "https://api.themoviedb.org/3/movie/top_rated";
 
   Future<List<Movie>> getPopulaire() async {
     var response = await http.get(Uri.parse(populaire));
@@ -18,6 +19,20 @@ class Api {
       return movies;
     } else {
       throw Exception('Failed to load movies');
+    }
+  }
+
+  Future<List<Movie>> getTopRated() async {
+    var response = await http.get(Uri.parse(topRated));
+    if (response.statusCode == 200)   {
+      var data = json.decode(response.body);
+      List<Movie> movie = [];
+      for (var item in data['results']) {
+        movie.add(Movie.fromJson(item));
+      }
+      return movie;
+    } else {
+      throw Exception("Failed to load movies");
     }
   }
 }

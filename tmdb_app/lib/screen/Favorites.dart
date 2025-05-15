@@ -2,14 +2,18 @@ import 'package:flutter/material.dart';
 import '../sevice/Movie.dart';
 import '../sevice/CrudMovie.dart';
 
-
 class Favorites extends StatefulWidget {
-  const Favorites({Key? key}) : super(key: key);
+  // final List<Movie> movies;
 
-   List<Movie> movies = [];
-
-  const Favorites({Key? key, required this.movies}) : super(key: key);
-
+  const Favorites({super.key});
 
   @override
+  _FavoritesState createState() => _FavoritesState();
+}
+
+class _FavoritesState extends State<Favorites> {
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(appBar: AppBar(title: Text('Favorites')));
+  }
 }
