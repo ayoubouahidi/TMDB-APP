@@ -1,3 +1,4 @@
+
 import 'dart:async';
 import 'dart:convert';
 
@@ -7,6 +8,9 @@ import 'package:tmdb_app/Api/api.dart';
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:tmdb_app/screen/MoviesScreen.dart';
 import 'package:tmdb_app/screen/Favorites.dart';
+
+import 'package:tmdb_app/screen/AllMoviesScreen.dart';
+
 import 'package:http/http.dart' as http;
 import 'package:tmdb_app/screen/SearchBar.dart';
 
@@ -49,7 +53,9 @@ class _MyHomePageState extends State<MyHomePage> {
       backgroundColor: const Color(0xFF0D1321),
       body: SafeArea(
         child: Column(
+
           children: [_buildAppBar(), Expanded(child: _pages[_selectedIndex])],
+
         ),
       ),
       bottomNavigationBar: _buildBottomNavigationBar(),
@@ -68,7 +74,9 @@ class _MyHomePageState extends State<MyHomePage> {
                 setState(() {
                   _isSearching = false;
                   _searchController.clear();
+
                   _searchResults.clear();
+
                 });
               },
             ),
@@ -82,6 +90,7 @@ class _MyHomePageState extends State<MyHomePage> {
               ),
             ),
           Expanded(
+
             child:
                 _isSearching
                     ? TextField(
@@ -97,6 +106,7 @@ class _MyHomePageState extends State<MyHomePage> {
                       autofocus: true,
                     )
                     : const SizedBox(),
+
           ),
           IconButton(
             icon: Icon(
@@ -116,8 +126,49 @@ class _MyHomePageState extends State<MyHomePage> {
           const CircleAvatar(
             radius: 18,
             backgroundImage: AssetImage("assets/ofppt.png"),
+
           ),
         ],
+      ),
+      child: Row(
+        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+        children: [
+          _buildNavItem(0, Icons.home_rounded, "Home"),
+          _buildNavItem(1, Icons.favorite_rounded, "Favorites"),
+        ],
+      ),
+    );
+  }
+
+  Widget _buildNavItem(int index, IconData icon, String label) {
+    final isSelected = _selectedIndex == index;
+    return InkWell(
+      onTap: () => _changeIndex(index),
+      child: Container(
+        padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 8),
+        decoration: BoxDecoration(
+          color: isSelected ? const Color(0xFF3E92CC) : Colors.transparent,
+          borderRadius: BorderRadius.circular(20),
+        ),
+        child: Column(
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            Icon(
+              icon,
+              color: isSelected ? Colors.white : Colors.white.withOpacity(0.6),
+              size: 26,
+            ),
+            const SizedBox(height: 4),
+            Text(
+              label,
+              style: TextStyle(
+                color: isSelected ? Colors.white : Colors.white.withOpacity(0.6),
+                fontSize: 12,
+                fontWeight: isSelected ? FontWeight.bold : FontWeight.normal,
+              ),
+            ),
+          ],
+        ),
       ),
     );
   }
@@ -196,7 +247,6 @@ class HomePageContent extends StatelessWidget {
       children: [
         _buildSectionTitle("Featured Movies"),
         _buildCarousel(),
-        _buildCategoryTabs(),
         HomeTrendingsBuilder(
           title: "Popular",
           moviesFuture: Api().getPopulaire(),
@@ -228,7 +278,9 @@ class HomePageContent extends StatelessWidget {
           return const Center(
             child: Padding(
               padding: EdgeInsets.all(24.0),
+
               child: CircularProgressIndicator(color: Color(0xFF3E92CC)),
+
             ),
           );
         }
@@ -351,41 +403,7 @@ class HomePageContent extends StatelessWidget {
           ),
         );
       },
-    );
-  }
 
-  Widget _buildCategoryTabs() {
-    final categories = ["All", "Action", "Comedy", "Drama", "Horror", "Sci-Fi"];
-
-    return Container(
-      height: 50,
-      margin: const EdgeInsets.symmetric(vertical: 16),
-      child: ListView.builder(
-        scrollDirection: Axis.horizontal,
-        padding: const EdgeInsets.symmetric(horizontal: 16),
-        itemCount: categories.length,
-        itemBuilder: (context, index) {
-          final isSelected = index == 0;
-          return Container(
-            margin: const EdgeInsets.only(right: 10),
-            child: Chip(
-              backgroundColor:
-                  isSelected
-                      ? const Color(0xFF3E92CC)
-                      : const Color(0xFF1D2D44),
-              label: Text(
-                categories[index],
-                style: TextStyle(
-                  color:
-                      isSelected ? Colors.white : Colors.white.withOpacity(0.8),
-                  fontWeight: isSelected ? FontWeight.bold : FontWeight.normal,
-                ),
-              ),
-              padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 4),
-            ),
-          );
-        },
-      ),
     );
   }
 }
@@ -415,18 +433,33 @@ class HomeTrendingsBuilder extends StatelessWidget {
                 Text(
                   title,
                   style: const TextStyle(
-                    fontSize: 18,
-                    fontWeight: FontWeight.bold,
-                    color: Colors.white,
+
+                    fontSize: 18, 
+                    fontWeight: FontWeight.bold, 
+                    color: Colors.white
+
                   ),
                 ),
                 TextButton(
                   onPressed: () {
-                    // Navigate to see all movies
+
+                    // Navigate to the full list of movies
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                        builder: (context) => AllMoviesScreen(
+                          categoryTitle: title,
+                          moviesFuture: moviesFuture,
+                        ),
+                      ),
+                    );
                   },
                   child: const Text(
                     "See All",
-                    style: TextStyle(color: Color(0xFF3E92CC)),
+                    style: TextStyle(
+                      color: Color(0xFF3E92CC),
+                    ),
+
                   ),
                 ),
               ],
@@ -497,6 +530,7 @@ class HomeTrendingsBuilder extends StatelessWidget {
                                 ),
                                 child: ClipRRect(
                                   borderRadius: BorderRadius.circular(16),
+
                                   child:
                                       movie.poster_path != null
                                           ? Image.network(

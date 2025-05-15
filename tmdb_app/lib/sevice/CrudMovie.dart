@@ -72,7 +72,7 @@ class MovieDatabase {
       final db = await this.db;
       final List<Map<String, dynamic>> maps = await db.query('movies');
       return List.generate(maps.length, (i) {
-        return Movie.fromJson(maps[i]);
+        return Movie.fromMapSqfLite(maps[i]);
       });
     }
 
