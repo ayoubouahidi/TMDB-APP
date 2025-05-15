@@ -130,13 +130,6 @@ class _MyHomePageState extends State<MyHomePage> {
           ),
         ],
       ),
-      child: Row(
-        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-        children: [
-          _buildNavItem(0, Icons.home_rounded, "Home"),
-          _buildNavItem(1, Icons.favorite_rounded, "Favorites"),
-        ],
-      ),
     );
   }
 
@@ -201,39 +194,6 @@ class _MyHomePageState extends State<MyHomePage> {
     );
   }
 
-  Widget _buildNavItem(int index, IconData icon, String label) {
-    final isSelected = _selectedIndex == index;
-    return InkWell(
-      onTap: () => _changeIndex(index),
-      child: Container(
-        padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 8),
-        decoration: BoxDecoration(
-          color: isSelected ? const Color(0xFF3E92CC) : Colors.transparent,
-          borderRadius: BorderRadius.circular(20),
-        ),
-        child: Column(
-          mainAxisSize: MainAxisSize.min,
-          children: [
-            Icon(
-              icon,
-              color: isSelected ? Colors.white : Colors.white.withOpacity(0.6),
-              size: 26,
-            ),
-            const SizedBox(height: 4),
-            Text(
-              label,
-              style: TextStyle(
-                color:
-                    isSelected ? Colors.white : Colors.white.withOpacity(0.6),
-                fontSize: 12,
-                fontWeight: isSelected ? FontWeight.bold : FontWeight.normal,
-              ),
-            ),
-          ],
-        ),
-      ),
-    );
-  }
 }
 
 class HomePageContent extends StatelessWidget {
