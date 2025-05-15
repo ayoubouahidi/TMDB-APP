@@ -3,11 +3,13 @@ import 'package:flutter/material.dart';
 import 'package:tmdb_app/sevice/Movie.dart';
 import 'package:tmdb_app/Api/api.dart';
 import 'package:carousel_slider/carousel_slider.dart';
+
 import 'package:tmdb_app/screen/MoviesScreen.dart';
 
+import 'package:tmdb_app/screen/Favorites.dart';
 
-
-class MyHomePage extends StatefulWidget {  // PascalCase naming
+class MyHomePage extends StatefulWidget {
+  // PascalCase naming
   const MyHomePage({super.key});
 
   @override
@@ -17,6 +19,11 @@ class MyHomePage extends StatefulWidget {  // PascalCase naming
 class _MyHomePageState extends State<MyHomePage> {
   int _selectedIndex = 0;
   late Future<List<Movie>> _moviesPopulaire;
+
+  final List<Widget> _pages = [
+    const homePageContent(), // We'll extract the home content to a separate widget
+    Favorites(),
+  ];
 
   @override
   void initState() {
@@ -34,56 +41,7 @@ class _MyHomePageState extends State<MyHomePage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: HomeAppBar(),
-      body: ListView(
-        physics: const BouncingScrollPhysics(),
-        padding: const EdgeInsets.only(top: 10),
-        children: [
-          const Center(
-                  child: Padding(
-                  padding: EdgeInsets.symmetric(vertical: 50),
-                  child: Text(
-                    "Upcommig",
-                    style: TextStyle(fontSize: 24, // Slightly larger font
-                      fontWeight: FontWeight.bold,
-                      color: Colors.black,),
-                  ),
-                ),
-
-          ),
-                FutureBuilder(
-                future: _moviesPopulaire,
-                builder: (context, snapshot) {
-                  if (!snapshot.hasData) {
-                    return const Center(
-                      child: CircularProgressIndicator(),
-                    );
-                  }
-                  final movies = snapshot.data!;
-
-                  return CarouselSlider.builder(
-                    itemCount: movies.length,
-                    itemBuilder: (context, index, movieIndex) {
-                      final movie = movies[index];
-                      return Container(
-                        width: double.infinity,
-                        decoration: BoxDecoration(borderRadius: BorderRadius.circular(8)),
-                        child: Image.network("https://image.tmdb.org/t/p/original/${movie.backdrop}"),
-                      );
-                    },
-                    options: CarouselOptions(
-                        autoPlay: true,
-                        enlargeCenterPage: true,
-                        aspectRatio: 1.4,
-                        autoPlayInterval: const Duration(seconds: 3)),
-                  );
-                },
-              ),
-          HomeTrendingsBuilder(
-            title: "Popular Movies",
-            moviesFuture: _moviesPopulaire,
-          ),
-        ],
-      ),
+      body: _pages[_selectedIndex],
       bottomNavigationBar: BottomNavigationBar(
         backgroundColor: Colors.blue,
         selectedItemColor: const Color.fromARGB(255, 247, 92, 28),
@@ -104,9 +62,74 @@ class _MyHomePageState extends State<MyHomePage> {
   }
 }
 
+class homePageContent extends StatelessWidget {
+  const homePageContent({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    return ListView(
+      physics: const BouncingScrollPhysics(),
+      padding: const EdgeInsets.only(top: 10),
+      children: [
+        const Center(
+          child: Padding(
+            padding: EdgeInsets.symmetric(vertical: 5),
+            child: Text(
+              "Upcommig",
+              style: TextStyle(
+                fontSize: 24, // Slightly larger font
+                fontWeight: FontWeight.bold,
+                color: Colors.black,
+              ),
+            ),
+          ),
+        ),
+        FutureBuilder(
+          future: Api().getPopulaire(),
+          builder: (context, snapshot) {
+            if (!snapshot.hasData) {
+              return const Center(child: CircularProgressIndicator());
+            }
+            final movies = snapshot.data!;
+
+            return CarouselSlider.builder(
+              itemCount: movies.length,
+              itemBuilder: (context, index, movieIndex) {
+                final movie = movies[index];
+                return Container(
+                  width: double.infinity,
+                  decoration: BoxDecoration(
+                    borderRadius: BorderRadius.circular(8),
+                  ),
+                  child: Image.network(
+                    "https://image.tmdb.org/t/p/original/${movie.backdrop}",
+                  ),
+                );
+              },
+              options: CarouselOptions(
+                autoPlay: true,
+                enlargeCenterPage: true,
+                aspectRatio: 1.4,
+                autoPlayInterval: const Duration(seconds: 3),
+              ),
+            );
+          },
+        ),
+        HomeTrendingsBuilder(
+          title: "Popular Movies",
+          moviesFuture: Api().getPopulaire(),
+        ),
+        // HomeTrendingsBuilder(
+        //   title: "Top  Rated",
+        //   moviesFuture: Api().getUpcoming(context))
+      ],
+    );
+  }
+}
+
 class HomeAppBar extends StatelessWidget implements PreferredSizeWidget {
-  HomeAppBar({super.key});  // Added constructor
-  
+  HomeAppBar({super.key}); // Added constructor
+
   final TextEditingController _controller = TextEditingController();
 
   @override
@@ -138,7 +161,7 @@ class HomeAppBar extends StatelessWidget implements PreferredSizeWidget {
                     controller: _controller,
                     decoration: InputDecoration(
                       hintText: "Search...",
-                      border: InputBorder.none,  // Removes default border
+                      border: InputBorder.none, // Removes default border
                       contentPadding: const EdgeInsets.symmetric(
                         vertical: 0,
                         horizontal: 10,
@@ -167,7 +190,6 @@ class HomeAppBar extends StatelessWidget implements PreferredSizeWidget {
   }
 }
 
-
 class HomeTrendingsBuilder extends StatelessWidget {
   final String title;
   final Future<List<Movie>> moviesFuture;
@@ -189,10 +211,7 @@ class HomeTrendingsBuilder extends StatelessWidget {
             padding: const EdgeInsets.symmetric(horizontal: 15),
             child: Text(
               title,
-              style: const TextStyle(
-                fontSize: 18,
-                fontWeight: FontWeight.bold,
-              ),
+              style: const TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
             ),
           ),
           SizedBox(
@@ -217,6 +236,7 @@ class HomeTrendingsBuilder extends StatelessWidget {
 
                 final movies = snapshot.data!;
                 return ListView.builder(
+
   scrollDirection: Axis.horizontal,
   itemCount: movies.length,
   itemBuilder: (context, index) {
@@ -253,6 +273,7 @@ class HomeTrendingsBuilder extends StatelessWidget {
     },
   );
  },
+
             ),
           ),
         ],
