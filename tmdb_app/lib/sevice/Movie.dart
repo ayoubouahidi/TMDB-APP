@@ -51,6 +51,7 @@ class Movie {
       video: json['video'],
     );
   }
+
   Map<String, dynamic> toJson() {
     return {
       'adult': adult,
@@ -70,6 +71,23 @@ class Movie {
     };
   }
 
-  
+factory Movie.fromMapSqfLite(Map<String, dynamic> map) {
+    return Movie(
+      adult: map['adult'] == 1,
+      backdrop: map['backdrop'],
+      original_language: map['original_language'],
+      original_title: map['original_title'],
+      overview: map['overview'],
+      release_date: map['release_date'],
+      title: map['title'],
+      poster_path: map['poster_path'] ?? '',
+      media_type: map['media_type'],
+      id: map['id'].toString(),
+      popularity: map['popularity'].toString(),
+      vote_average: map['vote_average'].toDouble(),
+      vote_count: map['vote_count'].toDouble(),
+      video: map['video'] == 1,
+    );
+  }
 
 }
